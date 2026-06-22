@@ -9,7 +9,7 @@ const LINKS = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/chat", label: "Chat" },
   { href: "/case", label: "Case folder" },
-  { href: "/connect", label: "Scan" },
+  { href: "/onboarding", label: "New scan" },
   { href: "/settings", label: "Settings" },
 ];
 

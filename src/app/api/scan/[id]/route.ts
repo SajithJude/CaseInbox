@@ -15,8 +15,11 @@ import { decryptSecret } from "@/lib/crypto";
 import type { ScanJob, ScanScope } from "@/lib/types";
 
 export const runtime = "nodejs";
+// Allow up to 60s per batch on Vercel (default Hobby cap is 10s, which a batch
+// of Gmail fetches + Gemini classifications can exceed).
+export const maxDuration = 60;
 
-const BATCH_SIZE = 8; // messages processed per GET call to keep requests fast.
+const BATCH_SIZE = 6; // messages processed per GET call to keep requests within budget.
 
 type JobRow = {
   id: string;

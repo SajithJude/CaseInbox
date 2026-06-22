@@ -4,7 +4,7 @@ import { gmailConfigured, getAuthUrl } from "@/lib/gmail";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(req: Request) {
   const user = await getCurrentUser();
   if (!user) {
     redirect("/login");
@@ -12,5 +12,7 @@ export async function GET() {
   if (!gmailConfigured()) {
     redirect("/connect?error=not_configured");
   }
-  redirect(getAuthUrl(user.id));
+  // Remember where to return after OAuth (agentic onboarding vs. manual connect).
+  const from = new URL(req.url).searchParams.get("from") === "onboarding" ? "onboarding" : "connect";
+  redirect(getAuthUrl(`${user!.id}:${from}`));
 }

@@ -10,7 +10,7 @@ export function AcknowledgeButton() {
   async function ack() {
     setLoading(true);
     await fetch("/api/disclaimer", { method: "POST" });
-    router.push("/connect");
+    router.push("/onboarding");
     router.refresh();
   }
   return (

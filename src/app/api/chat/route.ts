@@ -5,6 +5,8 @@ import { runAgent } from "@/lib/agent/run";
 import type { Citation } from "@/lib/types";
 
 export const runtime = "nodejs";
+// The agent's tool-calling loop can make several Gemini calls before answering.
+export const maxDuration = 60;
 
 type ChatBody = {
   message?: unknown;

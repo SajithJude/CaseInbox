@@ -24,12 +24,15 @@ export async function GET(req: Request) {
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
 
+  // state = "<userId>:<returnKey>"; verify the user and pick where to land.
+  const [stateUserId, returnKey] = (state ?? "").split(":");
+  const returnPath = returnKey === "onboarding" ? "/onboarding" : "/connect";
+
   if (!code) {
-    redirect("/connect?error=missing_code");
+    redirect(`${returnPath}?error=missing_code`);
   }
-  // The state we set was the user id; it must match the signed-in user.
-  if (!state || state !== user.id) {
-    redirect("/connect?error=state_mismatch");
+  if (!stateUserId || stateUserId !== user!.id) {
+    redirect(`${returnPath}?error=state_mismatch`);
   }
 
   let connectionEmail: string | null = null;
@@ -66,8 +69,8 @@ export async function GET(req: Request) {
       { onConflict: "user_id" }
     );
   } catch {
-    redirect("/connect?error=oauth_failed");
+    redirect(`${returnPath}?error=oauth_failed`);
   }
 
-  redirect("/connect?connected=1");
+  redirect(`${returnPath}?connected=1`);
 }
